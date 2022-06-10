@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#SBATCH --job-name=layout_model_2
+#SBATCH --account=slafia0
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --partition=spgpu
+#SBATCH --time=24:00:00
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=36gb
+#SBATCH --gpus=1
+
+module purge
+
+echo "Loading modules."
+
+module use /sw/examples/pytorch/modules
+module load gcc/8.2.0 image-libraries
+module load python/3.9.7 cuda/11.3.0 pytorch/1.10.2
+
+cd $HOME
+source layout_parser/bin/activate
+
+echo "Running job."
+
+/home/slafia/layout-parser/layout-model-training/scripts/train_cards.sh
+
+echo "Job complete."
+
