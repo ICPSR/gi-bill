@@ -1,16 +1,16 @@
 #!/bin/bash
 
-#SBATCH --job-name=layout_model_4
+#SBATCH --job-name=layout_model_5
 #SBATCH --account=slafia0
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --partition=spgpu
 #SBATCH --time=24:00:00
 
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=6
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=2
+#SBATCH --cpus-per-task=10
 #SBATCH --mem=36gb
-#SBATCH --gpus=1
+#SBATCH --gpus=2
 
 module purge
 
