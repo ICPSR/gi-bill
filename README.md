@@ -10,7 +10,7 @@ This repository contains code to extract structured text about GI Bill mortgages
 4. Extract text inside bounding boxes with Tesseract (OCR)
 5. Structure output and extract entities from structured data (NER)
 
-![Example of a parsed card](https://gitlab.umich.edu/gi_bill/layout-parser/-/blob/main/example-boxes.png "Example of a parsed card")
+![Example of a parsed card](https://gitlab.umich.edu/gi_bill/layout-parser/-/raw/main/example-boxes.png "Example of a parsed card")
 
 ## /downloaded-annotations
 
