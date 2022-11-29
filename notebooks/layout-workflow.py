@@ -12,7 +12,12 @@ import os
 
 # image_files = sorted(glob.glob('/nfs/turbo/isr-jtalexnonsen/sample_scans/'+'/*.jpg'))
 # image_files = sorted(glob.glob('/nfs/turbo/isr-jtalexnonsen/images/783095-23/'+'/*.jpg'))
-image_files = sorted(glob.glob('/nfs/turbo/isr-jtalexnonsen/flat_images/'+'/*.jpg'))
+# image_files = sorted(glob.glob('/nfs/turbo/isr-jtalexnonsen/images/flat_images/'+'/*.jpg'))
+image_files = sorted(glob.glob('/nfs/turbo/isr-jtalexnonsen/images/final_images/'+'/*.jpg')) # directory updated on 11/9/2022 to reflect re-scanned images from National Archive
+
+# TESTING
+# image_files = image_files[:10]
+
 print(f"Loading {len(image_files)} image files...")
 ocr_agent = lp.TesseractAgent(languages='eng')
 print("Initializing OCR engine...")
@@ -34,13 +39,16 @@ for file in image_files:
     right_blocks.sort(key = lambda b:b.coordinates[1])
     text_blocks = lp.Layout([b.set(id = idx) for idx, b in enumerate(left_blocks + right_blocks)])
     print(f"{len(text_blocks)} text blocks detected.")
-    for block in text_blocks:
-        segment_image = (block
-                        .pad(left=15, right=15, top=5, bottom=5)
-                        .crop_image(image))
-        text = ocr_agent.detect(segment_image)
-        block.set(text=text, inplace=True)
-    df = text_blocks.to_dataframe()
+    if len(text_blocks) > 0: # checking whether text_blocks is empty
+        for block in text_blocks:
+            segment_image = (block
+                            .pad(left=15, right=15, top=5, bottom=5)
+                            .crop_image(image))
+            text = ocr_agent.detect(segment_image)
+            block.set(text=text, inplace=True)
+        df = text_blocks.to_dataframe()
+    else: # if text_blocks is empty create a blank dataframe
+        df = pd.DataFrame()
     df['file_name'] = file_name
     df_list.append(df)
     print(f"Text extracted for {file_name}...")
@@ -54,7 +62,8 @@ df_pivot = df_output.pivot_table(index=['file_name'],
                                      aggfunc=lambda x: ' '.join(x))
 
 out_path = '/nfs/turbo/isr-jtalexnonsen/extracts/'
-df_pivot.to_csv(out_path+'flat_images.csv')
+df_pivot.to_csv(out_path+'final_images_all.csv')
+# df_pivot.to_csv(out_path+'flat_images_all.csv')
 print(f"Extraction completed. File saved to {out_path}.")
 
 ## 1 - LOAD IMAGES
