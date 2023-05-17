@@ -1,4 +1,4 @@
-# layout-parser
+# G.I. Bill
 
 This repository contains code to extract structured text about GI Bill mortgages from scanned index cards. The approach uses existing libraries including Label Studio to label training data, Detectron2 to train a deep-learning model for image analysis, Layout Parser for layout detection, and Tesseract for optical character recognition.
 
